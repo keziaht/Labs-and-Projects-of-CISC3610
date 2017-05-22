@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+      
+</head>
+<body>
+            
+    <div data-role="page">
+
+    <div data-role="header" data-theme="b">
+        <h1>Color Picker</h1>
+    </div>
+
+    <div data-role="main"> 
+        
+            <div><canvas id="myCanvas" width="500" height="500"></div>
+            
+            <label for="slider1">Choose Color:</label><br>
+            <input type="range" id="slider1" value="1" min="1" max="10" step="1" data-highlight="true" data-theme="b"  data-track-theme="c">
+                
+            <label for="slider2">Choose Size:</label>
+            <input type="range" id="slider2" value="1" min="1" max="5" step="1" data-highlight="true" data-theme="b"  data-track-theme="c">
+                
+                
+            <fieldset data-role="controlgroup" data-mini="true">
+                <input type="radio" name="radio-mini" id="radio1" value="choice-1">
+                <label for="radio1">Pink</label>
+ 
+                <input type="radio" name="radio-mini" id="radio2" value="choice-2">
+                <label for="radio2">Blue</label>
+ 
+                <input type="radio" name="radio-mini" id="radio3" value="choice-3">
+                <label for="radio3">Yellow</label>
+                
+                <input type="checkbox" name="checkbox" id="checkbox">
+                <label for="checkbox">Hide Rectangle </label>
+                
+                <input type="button" value="Reset Button" id="reset" data-theme="b" onclick="reset()">
+</fieldset>
+            
+    </div>
+
+    </div>
+        
+        <script>
+            
+                var canvas=document.getElementById("myCanvas");
+                var ctx=canvas.getContext("2d");
+                //var width=50;
+                //var height=50;
+            
+                function myRect(xcor,ycor,w,h){
+                    this.x=xcor;
+                    this.y=ycor;
+                    this.width=w;
+                    this.height=h;
+                }
+            
+                var rect= new myRect(0,0,50,50);
+            
+                var colors= ["#8A2BE2","#7FFF00","#00FFFF","#00008B",	"#FF8C00",
+                             "#008080","#FF1493","#1E90FF","#228B22","#FFD700"]
+                    
+                        $(window).load(function(){
+                            
+                            
+                            $("#slider1").on("slidestop", function(){
+                                 var value= $("#slider1").val();
+                                 var color= colors[value-1];
+                                 ctx.fillStyle=color;
+                                 ctx.fillRect(canvas.width/2-rect.width/2,canvas.height/2-rect.height/2,rect.width,rect.height);
+                            });
+                            
+                            $("#radio1").on("click", function(){
+                                ctx.fillStyle="#FFC0CB";
+                                ctx.fillRect(canvas.width/2-rect.width/2,canvas.height/2-rect.height/2,rect.width,rect.height);
+                            })
+                            
+                            $("#radio2").on("click", function(){
+                                ctx.fillStyle="#4169E1";
+                                ctx.fillRect(canvas.width/2-rect.width/2,canvas.height/2-rect.height/2,rect.width,rect.height);
+                            })
+                            
+                            $("#radio3").on("click", function(){
+                                ctx.fillStyle="#FFFF00";
+                                ctx.fillRect(canvas.width/2-rect.width/2,canvas.height/2-rect.height/2,rect.width,rect.height);
+                            })
+                            
+                            $("#checkbox").on("change", function(){
+                                if($("#checkbox").prop("checked")){
+                                    ctx.clearRect(0,0,500,500);
+                                }
+                                else{
+                                    ctx.fillRect(canvas.width/2-rect.width/2,canvas.height/2-rect.height/2,rect.width,rect.height);
+                                }
+                            })
+                            
+                             $("#slider2").on("slidestop", function(){
+                                 var value= $("#slider2").val();
+                                 rect.width=50*value;
+                                 rect.height=50*value;
+                                 ctx.clearRect(0,0,500,500);
+                                 ctx.fillRect(canvas.width/2-rect.width/2,canvas.height/2-rect.height/2,rect.width,rect.height);
+                            });
+   
+                            
+                        });
+            
+                    function reset(){
+                        ctx.clearRect(0,0,500,500);
+                        
+                        $("#slider1").val(1).slider("refresh");
+                        $("#slider2").val(1).slider("refresh");
+                    }
+               
+            
+    
+    
+        </script>
+    
+    
+    
+</body>
+</html>

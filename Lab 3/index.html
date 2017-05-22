@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  
+</head>
+<body onLoad="init()">
+              
+              
+    <canvas id="myCanvas" width="300" height="300" >
+    </canvas>
+    <script>
+        var context;
+        
+        function circle(xcor,ycor,rad,dxcor,dycor){
+            
+            this.x=xcor;
+            this.y=ycor;
+            this.r=rad;
+            this.dx=dxcor;
+            this.dy=dycor;
+        }
+        
+        var circ1=new circle(5,100,10,3,3);
+        var circ2=new circle(50,150,10,2,2);
+        
+        function init()
+        {
+            context= myCanvas.getContext('2d');
+            setInterval(draw,10);
+        }
+
+        function draw()
+        {
+            
+            context.clearRect(0,0, 300,300);
+            context.beginPath();
+            context.fillStyle="#ff0000";
+            
+        
+            context.arc(circ1.x,circ1.y,circ1.r,0,Math.PI*2);
+            context.arc(circ2.x,circ2.y,circ2.r,0,Math.PI*2);
+            
+            context.closePath();
+            context.fill();
+    
+            if( circ1.x<5 || circ1.x>295) 
+                circ1.dx=-circ1.dx; 
+            
+            if( circ1.y<5 || circ1.y>295) 
+                circ1.dy=-circ1.dy; 
+            
+            if( circ2.x<5 || circ2.x>295) 
+                circ2.dx=-circ2.dx; 
+            
+            if( circ2.y<5 || circ2.y>295) 
+                circ2.dy=-circ2.dy; 
+            
+            
+            
+            circ1.x+=circ1.dx; 
+            circ1.y+=circ1.dy;
+            
+            circ2.x-=circ2.dx; 
+            circ2.y-=circ2.dy;
+            
+            collide();
+        }
+        
+        function collide(){
+            
+                var dirx = (circ1.x + circ1.r) - (circ2.x + circ2.r);
+                var diry = (circ1.y + circ1.r) - (circ2.y + circ2.r);
+                var distance = Math.sqrt(dirx * dirx + diry * diry);
+    
+                if (distance < circ1.r + circ2.r) {
+                        
+                    circ1.dx=-circ1.dx;
+                    circ1.dy=-circ1.dy; 
+                    circ2.dx=-circ2.dx;
+                    circ2.dy=-circ2.dy; 
+                        
+                        
+                         
+                }
+            }     
+    
+    </script>
+    
+</body>
+</html>

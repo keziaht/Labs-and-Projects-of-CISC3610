@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  
+</head>
+<body>
+    
+    <table>
+        <tr><td><lable for= "noun1">Person</lable><td>
+           <td> <input type= "text" id="noun1"></td><tr>
+        
+        <tr><td><lable for= "noun2">Noun</lable><td>
+           <td> <input type= "text" id="noun2"></td><tr>
+        
+        <tr><td><lable for= "verb1">Verb</lable><td>
+           <td> <input type= "text" id="verb1"></td><tr>
+        
+        <tr><td><lable for= "verb2">Verb</lable><td>
+           <td> <input type= "text" id="verb2"></td><tr>
+        
+        <tr><td><lable for= "noun3">Noun</lable><td>
+           <td> <input type= "text" id="noun3"></td><tr>
+        
+        <tr><td><lable for= "verb3">Verb</lable><td>
+           <td> <input type= "text" id="verb3"></td><tr>
+        
+        <tr><td><lable for= "verb4">Verb</lable><td>
+           <td> <input type= "text" id="verb4"></td><tr>
+        
+        <tr><td><lable for= "noun4">Noun</lable><td>
+           <td> <input type= "text" id="noun4"></td><tr>
+
+    </table>
+       <input type ="button" value="Madlib" onclick="speak()"><br>
+    
+    <p>
+        Free For All <input type= "text" size="50"  id="free">
+        
+        <input type ="button" value="Free" onclick="freeforall()"><br>
+        
+    </p>
+    <script>
+            
+        function speak(){
+            var msg= new SpeechSynthesisUtterance();
+            var madlib = new String("There once was a " + document.getElementById('noun1').value +
+                               " from "+document.getElementById('noun2').value+", who "+document.getElementById('verb1').value+
+                               " he was "+document.getElementById('verb2').value+" his "+document.getElementById('noun3').value+
+                               ". He "+document.getElementById('verb3').value+" with a fright in the"+
+                               " middle of the night, to "+ document.getElementById('verb4').value+" that his "+
+                               document.getElementById('noun4').value+" had come true.");
+            msg.text=madlib;
+            
+            speechSynthesis.speak(msg);
+            document.write(madlib);
+        }
+        
+        function freeforall(){
+            var msg= new SpeechSynthesisUtterance(document.getElementById("free").value);
+            
+            speechSynthesis.speak(msg);
+            
+        }
+    
+    
+    
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,57 @@
+<html>
+<head> 
+           <H1>Commom Pets</H1>
+      
+</head> 
+<body> 
+        
+    
+        <script type="text/javascript" src="pets.json"></script>
+    
+                <script>
+                        
+                    var mydata = JSON.parse(animals);
+                    var pet1= mydata[0].type;
+                    var pet1link=mydata[0].link;
+        
+                    document.write('<a href="' + pet1link + '">'+pet1+'</a>');
+                
+                </script>
+                        <p> Cats are one of the most common household pets. They tend to be independent and clean animals.</p>
+    
+    
+    
+                <script>
+                        
+                    var mydata = JSON.parse(animals);
+                    var pet2= mydata[1].type;
+                    var pet2link=mydata[1].link;
+        
+                    document.write('<a href="' + pet2link + '">'+pet2+'</a>');
+                
+                </script>
+                        <p> Dogs are man's bestfriends. They are loyal, playful and loving.</p>
+    
+    
+                <script>
+                        
+                    var mydata = JSON.parse(animals);
+                    var pet3= mydata[2].type;
+                    var pet3link=mydata[2].link;
+        
+                    document.write('<a href="' + pet3link + '">'+pet3+'</a>');
+                
+                </script>
+                        <p> Rabbits are delicate furry creatures. Their twitchy noses and furry feet warms that hearts of pet oweners everywhere.</p>
+                
+
+                    <footer>
+                        <P>By Keziah Thomas</P>
+                    </footer>
+
+
+
+
+
+</body>
+</html>
