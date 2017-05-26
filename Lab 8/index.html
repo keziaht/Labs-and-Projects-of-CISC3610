@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+         <link rel="stylesheet" href="style.css">
+      
+           <script>
+            document.documentElement.style.display = "none";
+            (function onReady(f) {
+            document.readyState === "complete"
+            ? f() : setTimeout(onReady, 50, f);
+            }(function() { 
+            document.documentElement.style.display = "";
+            }));
+            </script>
+
+  </head>
+
+  <body>
+
+      <div id = sta class="wrap">
+      <button id="start" onclick="onStart()">START</button>
+      <button id="stop" onclick="showText()">SHOW TEXT</button>
+      </div>
+      <div id = "stp" class="wrap">
+      <button id="stop" onclick="onStop()">STOP</button>
+      <button id="stop" onclick="showText()">SHOW TEXT</button>
+      </div><br>
+      
+      <div id = "cilcea" class="wrap">
+      <canvas id="canvas" width=600 height=600></canvas>
+      </div><br>
+      
+      <div id= texta class="wraper">
+             <textarea id="results" cols="80" rows="5"></textarea>
+      </div>
+ 
+<script>
+    var can=document.getElementById("canvas");
+    var context=can.getContext("2d");
+    var colors=["red","black","",""]
+    var cx=300;
+    var cy=300;
+    var radius=50;
+    var cc="black"
+    var sabut=document.getElementById("sta");
+    var stbut=document.getElementById("stp");
+    var tex=document.getElementById("texta");
+    stp.style.display="none"
+    tex.style.display="none"
+    
+    context.fillStyle=cc;
+    context.beginPath();
+    context.arc(cx,cy,radius,0,2*Math.PI);
+    context.fill();
+
+
+    var recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    
+    function userCommand(str,st){
+        return str.indexOf(st) > -1;
+    }
+    recognition.onresult = function (e) {
+        var textarea = document.getElementById('results');
+
+        for (var i = e.resultIndex; i < e.results.length; ++i) {
+            if (e.results[i].isFinal) {
+            
+                var str=e.results[i][0].transcript;
+                textarea.value += e.results[i][0].transcript;
+                if(userCommand(str,"color")){
+                    
+                    var s = str;
+                    var mat = s.match(/color\s(\w*)/, ''); 
+                
+                    
+                    if(mat!==null){
+                        
+                        var test= validTextColour(mat[1]);
+                        
+                            if(test){
+                                cc=mat[1];
+                                redraw();
+                            }
+                    }
+                   
+                 }
+                
+                
+                 if(userCommand(str,"size")){
+                            var regex = /\d+/g;
+                            var string = str;
+                            var matches = string.match(regex);
+                            if(matches!=null){
+                                if(matches<300 && matches>1){
+                                    radius=matches*2;
+                                    redraw();
+                                }
+                                
+                                if(matches>300){
+                                    var bmsg = new SpeechSynthesisUtterance('Size limit is 300.');
+                                        window.speechSynthesis.speak(bmsg);
+                                }
+                                if(matches<1){
+                                    var smsg = new SpeechSynthesisUtterance('Size minimum is 1.');
+                                    window.speechSynthesis.speak(smsg);
+                                }
+                            }
+                     
+                 }
+                
+                if(userCommand(str,"help")){
+                    
+                        var hmsg = new SpeechSynthesisUtterance('Say color, followed by a color, to set the circle color. Say size, followed by a number from 1 to 300, to set the diameter of the circle.');
+                        window.speechSynthesis.speak(hmsg);
+                
+            
+                    }
+                   
+                 
+            }
+        }
+    }
+
+    function redraw(){
+        context.fillStyle=cc;
+        context.clearRect(0,0,600,600)
+        context.beginPath();
+        context.arc(cx,cy,radius,0,2*Math.PI);
+        context.fill();
+    }
+    function validTextColour(stringToTest) {
+            if (stringToTest === "") { return false; }
+            if (stringToTest === "inherit") { return false; }
+            if (stringToTest === "transparent") { return false; }
+    
+            var image = document.createElement("img");
+            image.style.color = "rgb(0, 0, 0)";
+            image.style.color = stringToTest;
+            if (image.style.color !== "rgb(0, 0, 0)") { return true; }
+            image.style.color = "rgb(255, 255, 255)";
+            image.style.color = stringToTest;
+            return image.style.color !== "rgb(255, 255, 255)";
+                    
+        }
+    
+    function onStart(){
+        stbut.style.display='block';
+        sabut.style.display='none';
+        recognition.start();
+        
+    }
+    
+    function onStop(){
+        stbut.style.display='none';
+        sabut.style.display='block';
+        recognition.abort();
+    }
+    
+    function showText(){
+         if (tex.style.display === 'none') {
+             tex.style.display = 'block';
+            } 
+         else {
+             tex.style.display = 'none';
+            }
+    }
+
+</script>
+      
+      
+  </body>
+
+</html>

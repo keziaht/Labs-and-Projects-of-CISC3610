@@ -1,0 +1,135 @@
+<html>
+<head> 
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="style.css">
+            <script src="howler.core.js"></script>
+    
+            <title>SOUND LAB</title>
+</head> 
+<body> 
+    
+<div>
+        
+    <div>
+    <h1>SOUND LAB</h1>
+    </div>
+    
+    <fieldset>
+        <div>
+         <label for="sound1">HI</label>
+         <input type="radio" id="sound1"  name="choice"  onclick="playSound(rain)" >
+        
+         <label for="sound2">HI</label>
+         <input type="radio" id="sound2" name="choice"  onclick="playSound(permanent)">
+    
+         <label for="sound3">HI</label>
+         <input type="radio" id="sound3" name="choice"  onclick="playSound(wood)">
+    
+         <label for="sound4">HI</label>
+         <input type="radio" id="sound4" name="choice"   onclick="playSound(tropical)">
+        </div>
+        
+    </fieldset>
+    
+     <fieldset>
+         <button id="effect1"   onclick="playEffect(bird)" >BIRD</button>
+        
+
+         <button id="effect2"  onclick="playEffect(woop)">WOOP</button>
+    
+         <button id="effect3"   onclick="playEffect(laser)">LASER</button>
+    
+         <button id="effect4"   onclick="playEffect(echo)">ECHO</button>
+         
+    
+         <button id="effect5"   onclick="playEffect(slide)">SLIDE</button>
+
+    </fieldset>
+    
+    
+    
+     <fieldset>
+         <label for="none">HI</label>
+         <input type="radio" id="none" name="choice"  onclick="stopAll()">
+         
+    </fieldset>
+</div>
+
+    
+    <script>
+        var rain="rain.mp3";
+        var permanent = "permanent.mp3";
+        var wood="wood.mp3";
+        var tropical="tropical.mp3";
+        
+        var bird="bird.mp3";
+        var woop="woop.mp3";
+        var slide="slide.mp3";
+        var laser="laser.mp3";
+        var echo="echo.mp3";
+        
+        var sound=null;
+        function playSound(melody) {
+            
+            if (sound != null) {
+                 sound.stop();
+                 sound.unload();
+                 sound = null;
+            }
+            
+            
+             sound = new Howl({
+                src: [melody],
+                loop: true,
+                volume: 0.2,
+                });
+            
+                sound.play();
+     }
+        
+        
+        function playEffect(effect) {
+            
+            var ele = document.getElementsByName("choice");
+                for(var i=0;i<ele.length;i++)
+                    ele[i].checked = false;
+            
+            if (sound != null) {
+                 sound.stop();
+                 sound.unload();
+                 sound = null;
+            }
+            
+            
+             sound = new Howl({
+                src: [effect],
+                volume: 0.2,
+                });
+            
+                sound.play();
+     }
+        
+        function stopAll() {
+            
+            if (sound != null) {
+                 sound.stop();
+                 sound.unload();
+                 sound = null;
+            }
+            
+     }
+
+    
+    
+    </script>
+    
+    
+    
+    
+    
+    
+
+
+</body>
+</html>

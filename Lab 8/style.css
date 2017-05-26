@@ -1,0 +1,51 @@
+button{
+    
+    background:    #b6d7a8;
+    background:    -webkit-linear-gradient(#b6d7a8, #ea9999);
+    background:    linear-gradient(#b6d7a8, #ea9999);
+    border-radius: 16px;
+    box-shadow:    0 4px #99c57b;
+    padding:       11px 24px;
+    color:         #66ff67;
+    display:       inline-block;
+    font:          normal 700 48px/1 "Caviar", sans-serif;
+    text-align:    center;
+    text-shadow:   2px 2px #9900ff;
+    top: %50;
+    
+}
+
+textarea {
+    
+    background-color:#f7ffb9;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    border-width:3;
+    border-style:solid;
+    border-color:#ff8040;
+    font-family:Verdana;
+    font-size:14pt;
+    color:#ff00ff;
+    
+
+}
+
+.wrap {
+    margin-left:300px;
+}
+
+.wraper {
+    margin-left:160px;
+}
+#canvas{
+    border-width:3;
+    border-style:solid;
+    border-color:#ff8040;
+}
+input{
+    background-color:#ffffff;
+    font-family:Verdana;
+    font-size:14pt;
+    color:#000000;
+
+}
