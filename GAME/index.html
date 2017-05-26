@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    
+    
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <script src="howler.core.js"></script>  
+        <link rel="stylesheet" href="style.css">
+        <script>
+            document.documentElement.style.display = "none";
+            (function onReady(f) {
+            document.readyState === "complete"
+            ? f() : setTimeout(onReady, 15, f);
+            }(function() { 
+            document.documentElement.style.display = "";
+            }));
+        </script>
+
+</head>
+<body>
+    
+    
+<div id="menu" class="wrap">
+    <button id="play" onclick="startGame()">PLAY</button>
+    <button id="help" onclick="displayHelp()">HELP</button>
+    <button id="mute" onclick="muteSound1()">MUTE</button>
+</div>
+<div id="restart" class="wrap">
+    <button id="newplay" onclick="restartGame()">RESTART</button>
+    <button id="menur" onclick="loadMenu()">MENU</button>
+</div>
+<div id="during" class="wrap">
+    <button id="mutep" onclick="muteSound2()">MUTE</button>
+</div>
+    
+<div id="helping" class="wrap">
+    <button id="menuh" onclick="loadMenu()">MENU</button>
+    <button id="helpc" onclick="displayHelp()">HELP</button>
+    <button id="muteh" onclick="muteSound1()">MUTE</button>
+</div><br>
+
+    
+<canvas id="canvas" width=1000 height=500 ></canvas>
+
+    
+<script>
+    
+    var stat1=1;
+    var stat2=1;
+    
+    var itemget= new Howl({
+            src:['item.mp3']
+    
+    })
+    
+    
+    var gamebgm= new Howl({
+        
+        src:['frantic.wav'],
+        loop: true,
+    })
+    
+    var startbgm= new Howl({
+        
+        src:['mushroom.mp3'],
+        loop: true,
+    })
+    
+     function muteSound1(){
+        if(stat1==1){
+            startbgm.mute(true);
+            stat1=0;
+        }
+        else{
+            startbgm.mute(false);
+            stat1=1;
+        }
+    }
+    
+    function muteSound2(){
+        if(stat2==1){
+            gamebgm.mute(true);
+            itemget.mute(true);
+            stat2=0;
+        }
+        else{
+            itemget.mute(false);
+            gamebgm.mute(false);
+            stat2=1;
+        }
+    }
+    
+</script>
+    
+    
+     
+<script>
+var c=document.getElementById("canvas");
+var context = c.getContext("2d");
+var rmenu= document.getElementById("restart");
+var nmenu=document.getElementById("menu");
+var dmenu=document.getElementById("during");
+var hmenu=document.getElementById("helping");
+rmenu.style.display='none';
+dmenu.style.display='none';
+hmenu.style.display='none';
+startbgm.play();
+    
+var player;
+var ibg=new Image();
+   ibg.src="startbg.png";
+   ibg.onload= function(){
+        context.drawImage(ibg,0,0,1075,538, 0, 0, 1000, 500);
+    }
+    
+var background;
+var apple = [];
+var score;
+var timer;
+var time;
+var timeleft;
+var gameover;
+    gameover=new component(1000,500,"gameo.jpg",0,0,"image",0,0,1280,720);
+    
+var cscore;
+
+var left=false;
+var right=true;
+
+    
+    
+function startGame() {
+    nmenu.style.display='none';
+    rmenu.style.display='none';
+    dmenu.style.display='block';
+    hmenu.style.display='none';
+    startbgm.stop();
+    player= new component(108,139,"teeth.png",0,300,"image",36,315,108,139);
+    score= new component("30px","Arial Black","#ec1313",800,40,"text");
+    timer= new component("30px","Arial Black","#ff0080",40,40,"text");
+    background = new component(1000,500,"full-bg.png",0,0,"image",0,0,3072,1536);
+    cscore=0;
+    timeleft=30;
+    time=(setInterval("countdown()",1000));
+    myGameArea.start();
+}
+function restartGame(){
+    clearInterval(time);
+    startGame();
+}
+        
+   function displayHelp(){
+        nmenu.style.display='none';
+        hmenu.style.display='block';
+        myGameArea.clear();
+        var hbg=new Image();
+        hbg.src="helpg.png";
+        hbg.onload= function(){
+        context.drawImage(hbg,0,0,975,551, 0, 0, 1000, 500);
+      }
+   }
+    
+    function loadMenu(){
+        nmenu.style.display='block';
+        hmenu.style.display='none';
+        rmenu.style.display= 'none';
+        dmenu.style.display='none';
+        clearInterval(time);
+        myGameArea.clear();
+        context.drawImage(ibg,0,0,1075,538, 0, 0, 1000, 500);
+        if(startbgm.playing()==false)
+            startbgm.play();
+        
+   }
+        
+   var myGameArea = {
+    canvas : document.createElement("canvas"),
+    
+    start : function() {
+        clearInterval(this.interval);
+        this.isStopped=false;
+        this.frameNo = 0;
+        this.interval = setInterval(updateGameArea, 20);
+        window.addEventListener('keydown', function (e) {
+            myGameArea.key = e.keyCode;
+        });
+        window.addEventListener('keyup', function (e) {
+            myGameArea.key = false;
+        });
+        
+           gamebgm.play();
+        },
+    clear : function() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    },
+    stop : function() {
+        clearInterval(this.interval);
+        gameover.update();
+        nmenu.style.display='none';
+        dmenu.style.display='none';
+        hmenu.style.display='none';
+        rmenu.style.display= 'block';
+        gamebgm.stop();
+        startbgm.stop();
+        this.isStopped=true;
+    }
+}
+    
+    
+function countdown() {
+  if (timeleft == 0) {
+    myGameArea.stop();
+  } 
+   if(timeleft> 0){
+    timeleft-=1;
+  }
+}
+    
+
+function component(width, height, color, x, y, type, currX, currY, currW,currH) {
+    this.type = type;
+    if (type == "image") {
+        this.image = new Image();
+        this.image.src = color;
+    }
+    this.width = width;
+    this.height = height;
+    this.speedX = 0;
+    this.speedY = 0;    
+    this.x = x;
+    this.y = y;
+    this.gravity = 0.2;
+    this.gravitySpeed = 0;
+    this.bounce = 0.6;
+    this.currX=currX;
+    this.currY=currY;
+    this.currW=currW;
+    this.currH=currH;
+    
+    var canRemove=false;
+    this.update = function() {
+        
+        if (type == "image") {
+            
+            context.drawImage(this.image,this.currX,this.currY,this.currW,this.currH, this.x, this.y,
+                this.width, this.height);
+
+        
+        }
+        
+        if (this.type == "text") {
+            context.font = this.width + " " + this.height;
+            context.fillStyle = color;
+            context.fillText(this.text, this.x, this.y);
+        }
+        
+        
+    }
+    this.newPos = function() {
+        this.x += this.speedX;
+        this.y += this.speedY;        
+    }
+    
+    this.hitBottom = function() {
+        var rockbottom = canvas.height - (this.height) -(60);
+        this.gravitySpeed += this.gravity;
+        this.y += this.speedY + this.gravitySpeed;
+        
+        if (this.y > rockbottom) {
+            this.y = rockbottom;
+            this.gravitySpeed = -(this.gravitySpeed * this.bounce);
+        }
+        
+        if (this.y == rockbottom) {
+            this.canRemove=true;
+        }
+    }
+    
+    this.collect = function(obj){
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var otherleft = obj.x;
+        var otherright = obj.x + (obj.width);
+        
+        var uncool=true
+        
+        if ((myright < otherleft) || (myleft > otherright)) {
+            uncool = false;
+        }
+        return uncool;
+    }
+    
+}
+
+    
+    
+    
+    
+function everyinterval(n) {
+    if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
+    return false;
+}
+    
+    
+    
+function updateGameArea() {
+    myGameArea.clear();
+    background.update();
+    if(myGameArea.isStopped==false){
+    var y;
+    var x=[100,200,300,400,500,600,700,800,900];
+    var rspace=player.x;
+    var lspace=player.x+100;
+    
+    
+    myGameArea.frameNo += 1;
+    if (myGameArea.frameNo == 1 || everyinterval(60)) {
+        y = 300;
+        x = x[Math.floor((Math.random() * 10))];
+        if((apple.length<2)){
+            if((x < lspace) || (x > rspace)){
+                apple.push(new component(40, 45,"apple.png", x, y, "image",0,0,996,1020));
+            }
+        
+        }
+    }
+    for (i = 0; i < apple.length; i += 1) {
+        apple[i].hitBottom();
+        apple[i].update();
+    }
+    
+     for (i = 0; i < apple.length; i += 1) {
+        if (player.collect(apple[i])) {
+            if(apple[i].canRemove){
+                itemget.play();
+                apple.splice(i,1);
+                cscore+=10;
+            }
+        }
+     }
+    
+    player.speedX = 0;
+    player.speedY = 0;
+    if (myGameArea.key && myGameArea.key == 37) {
+        
+      if( player.x != 0 ){
+        player.speedX = -5;
+        
+        if(left==true){
+            right=true;
+            left=false;
+            player.currX=8;
+            player.currY=13
+        }
+        
+        player.currW=110;
+        player.currH=137
+        
+        player.currX+=146;
+        
+        if(player.currX >=846){
+            player.currX=8;
+        }
+      }
+    }
+    
+    
+    if (myGameArea.key && myGameArea.key == 39) {
+        
+        
+      if((player.x+105) != 1000 ){
+        player.speedX = 5;
+        if(right==true){
+            right=false;
+            left=true;
+            player.currX=36;
+            player.currY=315;
+        }
+        
+        player.currW=108;
+        player.currH=139;
+        
+        player.currX+=146;
+        if(player.currX >=887){
+            player.currX=36;
+        }
+      }
+    }
+    
+    score.text="SCORE: "+cscore;
+    score.update();
+    timer.text="TIME: " +timeleft;
+    timer.update();
+    player.newPos();
+    player.update();
+        }
+  }
+    
+
+
+</script>
+    
+    
+    
+    
+
+
+</body>
+</html>
