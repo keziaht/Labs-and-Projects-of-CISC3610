@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+   
+    
+</head>
+<body>
+
+    
+<div id="gameArea">
+    <canvas id="myCanvas" width="500" height="500"  style="border: 3px solid #00BFFF ;"></canvas>
+</div><br>
+     
+    
+    <script>    
+    
+            var c=document.getElementById("myCanvas");
+            var context=c.getContext('2d');
+            
+            context.fillStyle="SkyBlue ";
+            context.fillRect(0,0,500,500);
+        
+            context.fillStyle="yellow ";
+            context.beginPath();
+            context.arc(80,80,50,0,2*Math.PI);
+            context.fill();
+            context.closePath();
+        
+            context.fillStyle="green";
+            context.fillRect(0, 430, 500, 80);
+        
+            context.fillStyle="SaddleBrown";
+            context.fillRect(60, 300, 40, 150);
+        
+            context.fillStyle="Olive";
+            context.beginPath();
+            context.arc(50,300,40,0,2*Math.PI);
+            context.closePath();
+            context.fill();
+        
+            context.fillStyle="Olive";
+            context.beginPath();
+            context.arc(80,270,40,0,2*Math.PI);
+            context.closePath();
+            context.fill();
+        
+            context.fillStyle="Olive";
+            context.beginPath();
+            context.arc(100,300,40,0,2*Math.PI);
+            context.closePath();
+            context.fill();
+        
+            context.fillStyle="brown";
+            context.strokeStyle = 'red';
+            
+            
+        
+            context.fillRect(183, 247, 252, 192);
+            
+            context.fillStyle="coral"
+            context.fillRect(200, 95, 50, 150);
+            
+            context.fillStyle = 'purple';
+            context.beginPath();
+            context.moveTo(290, 95);
+            context.lineTo(435,250);
+            context.lineTo(180,250);
+            context.fill();
+            context.closePath();
+    
+            
+            context.fillStyle="Wheat";
+            context.fillRect(210, 275, 62, 58);
+        
+        
+            context.strokeStyle = 'purple';
+            context.beginPath();
+            context.moveTo(240, 275);
+            context.lineTo(240,335);
+            context.stroke();
+            context.closePath();
+        
+        
+            context.fillStyle="Peru";
+        
+            context.fillRect(279, 365, 54, 74);
+        
+        
+            context.fillStyle="Teal";
+            context.fillRect(365, 267, 38, 84);
+
+    
+    
+    </script>
+            
+</body>
+</html>
