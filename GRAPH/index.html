@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> GRAPHING APP</title>
+    
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="style1.css">
+   
+    
+</head>
+<body>
+
+<div id="ttt">
+    
+    <p id="disl"></p>
+    
+</div><br>
+    
+<div id="gameArea">
+    <canvas id="myCanvas" width="500" height="350"  style="border: 3px solid pink;"></canvas>
+</div><br>
+    
+            <div class="checkbox1">
+                <input type="checkbox" id="griddis" checked>
+                <label for= "griddis">GRID DISPLAY</label>
+        </div><br>
+            <div class="box">
+                <input type="radio" name="choice" id="color1" onclick="changeLine(blue)">
+                <label for="color1">BLUE</label>
+                <input type="radio" name="choice" id="color2" onclick="changeLine(green)">
+                <label for="color2">GREEN</label>
+                <input type="radio" name="choice" id="color3"checked="checked" onclick="changeLine(red)">
+                <label for="color3">RED</label>
+            </div><br>
+
+            <br><div class="form-style-3">
+                TITLE
+                <input type="text"  id="graphl" style="text-transform:uppercase" >  
+                <input type="button" value="SUBMIT" onclick="setLabel()"><br>
+                X AXIS
+                <input type="text"  id="xlabel"> 
+                <input type="button" value="SUBMIT" onclick="labelAxis()"><br>
+                Y AXIS
+                <input type="text"  id="ylabel">
+                <input type="button" value="SUBMIT" onclick="labelAxis()"><br>
+
+            </div>
+        
+        
+      
+    
+
+            <div class="box" >
+                <input type="radio" id="rad1" name="choice" onclick="draw(ps1)" value="x*x">
+                <label for="rad1">POW(X,2)</label>
+                <input type="radio" id="rad2" name="choice" onclick="draw(ps2)" value="Math.tan(x*5)*180/Math.PI">
+                <label for="rad2">TAN(X*5)</label>
+                <input type="radio" id="rad3" name="choice" onclick="draw(ps3)" value="Math.cos(x*5)*180/Math.PI">
+                <label for="rad3">COS(X*5)</label>
+            
+                <input type="radio" id="rad4" name="choice" onclick="preEnter()">
+               <label for="rad4">SELECT</label>
+                <input type="radio" id="rad5" name="choice"  onclick="manuEnter()">
+                <label for="rad5">MANUAL</label>
+            
+                <input type="radio" id="rad6" name="choice" onclick="window.location.reload();">
+                <label for="rad6">RESET</label>
+            </div>
+  
+            <div id="preset" class="form-style-3">
+                <select id="pre" class="input">
+                    <option value="SELECT FUNC">SELECT FUNC</option>
+                    <option value="Math.log(x)">Log()</option>
+                    <option value="Math.sin(x*5)*180/Math.PI">Sin()</option>
+                    <option value="Math.pow(x,2)">Pow()</option>
+                    
+                    </select>
+                <input type="button" value="SELECT" onclick="chooseSelect()">
+    
+                <div id="test">
+                
+                Plot Function: <input type="text"  id="tfunc">
+                <input type="button" value="Plot" onclick="draw(tf)">
+                
+                </div>
+            </div>
+    
+            <div id="manual" class="form-style-3">
+                
+                Plot Function: <input type="text"  id="man">
+                <input type="button" value="Plot" onclick="draw(mp)">
+                
+            </div>
+    
+
+    
+    <script>
+            var canvas = undefined;
+            var canvasContext = undefined;
+
+	var offset=0.5;
+	var jump=10;
+    var linec="red";
+    var red="red";
+    var blue="blue";
+    var green="green";
+    var tit=document.getElementById("ttt");
+    var mn=document.getElementById("manual");
+    var pr=document.getElementById("preset");
+        
+    var eq="equation";
+    var ps1="rad1";
+    var ps2="rad2";
+    var ps3="rad3";
+    var mp="man";
+    var tf="tfunc";
+        
+        
+        
+    tit.style.display='none';
+    mn.style.display='none';
+    pr.style.display='none';
+
+function start() {
+    canvas = document.getElementById("myCanvas");
+    canvasContext = canvas.getContext("2d");
+}
+
+document.addEventListener('DOMContentLoaded', start);
+
+function update() {
+}
+
+function draw(tplot) {
+	canvasContext.fillStyle = "white";
+    canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+    
+	
+	if(jump<0)
+		return;
+
+    canvasContext.beginPath();
+	
+	// Draw Graph Paper.
+     var dis = document.getElementById("griddis").checked;
+    
+    if(dis==true){
+	canvasContext.strokeStyle="pink";
+	canvasContext.lineWidth=1;
+    
+    for (var x = offset; x <= canvas.width; x += jump) {
+
+        canvasContext.moveTo(x, 0);
+        canvasContext.lineTo(x, canvas.height);
+
+    }
+
+        canvasContext.moveTo(canvas.width-offset, 0);
+        canvasContext.lineTo(canvas.width-offset, canvas.height);
+        
+    for (var y = offset; y <= canvas.height; y += jump) {
+
+        canvasContext.moveTo(0, y);
+        canvasContext.lineTo(canvas.width, y);
+    
+        }
+        canvasContext.stroke();
+	
+    }
+	// Setup Axises
+	canvasContext.strokeStyle="#000000";
+	canvasContext.lineWidth=2;
+		
+
+	canvasContext.beginPath();
+    // Draw X Axis
+	canvasContext.moveTo(0,(canvas.height+jump)/2-offset);
+    canvasContext.lineTo(canvas.width,(canvas.height+jump)/2-offset);
+	
+
+	// Draw Y Axis
+    canvasContext.moveTo(canvas.width/2,-offset);
+    canvasContext.lineTo(canvas.width/2,canvas.height-offset);
+    
+    canvasContext.stroke();
+    
+
+	// Draw Graph
+	canvasContext.save();
+    plotEquation(tplot);
+	canvasContext.restore();
+
+}
+        
+function changeLine(color){
+    linec=color;
+}
+        
+function labelAxis(){
+        var lx =document.getElementById("xlabel").value.toUpperCase();
+        var ly =document.getElementById("ylabel").value.toUpperCase();
+        canvasContext.fillStyle = "red";
+        canvasContext.font = "30px Arial";
+        canvasContext.fillText(lx,10,205);
+        canvasContext.fillText(ly,250,30);
+}
+
+function plotEquation(tplot) {
+    
+    var plotting=document.getElementById(tplot).value;
+    
+	canvasContext.strokeStyle=linec;
+	
+	canvasContext.beginPath();
+    canvasContext.translate(canvas.width/2,(canvas.height+jump)/2-offset);
+	for (var x = -canvas.width/2; x <= canvas.width; x += jump) {
+        canvasContext.lineTo(x, -eval(plotting));
+    }
+	canvasContext.stroke();		
+}
+function setLabel(){
+    tit.style.display='block';
+    var inp=document.getElementById("graphl").value.toUpperCase();
+    if(inp != null)
+    {   
+        document.getElementById("disl").innerHTML = inp;
+    }
+}  
+        
+function manuEnter(){
+     if (mn.style.display == 'none') {
+        pr.style.display="none"
+        mn.style.display = 'block';
+    } else {
+        mn.style.display = 'none';
+    }
+}
+        
+function preEnter(){
+     if (pr.style.display == 'none') {
+        mn.style.display = 'none';
+        pr.style.display = 'block';
+    } else {
+        pr.style.display = 'none';
+    }
+}
+        
+function chooseSelect(){
+    var s=document.getElementById("pre").value;
+    document.getElementById("tfunc").value=s;
+}
+            
+            
+            
+    </script>
+</body>
+</html>
